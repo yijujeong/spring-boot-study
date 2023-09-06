@@ -1,20 +1,13 @@
 package com.mysite.sbb;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import java.util.List;
-import java.util.Optional;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.mysite.sbb.answer.Answer;
 import com.mysite.sbb.answer.AnswerRepository;
-import com.mysite.sbb.question.Question;
 import com.mysite.sbb.question.QuestionRepository;
+import com.mysite.sbb.question.QuestionService;
 
 @SpringBootTest
 class SbbApplicationTests {
@@ -29,7 +22,10 @@ class SbbApplicationTests {
 	@Autowired
 	private AnswerRepository answerRepository;
 	
-	@Transactional // 메서드가 종료될 때까지 DB 세션이 유지
+	@Autowired
+	private QuestionService questionService;
+	
+//	@Transactional // 메서드가 종료될 때까지 DB 세션이 유지
 	@Test
 	// JUnit으로 실행시 @Test 애너테이션이 붙은 메서드 실행
 	void testJpa() {
@@ -108,13 +104,18 @@ class SbbApplicationTests {
 //		assertEquals(2, a.getQuestion().getId());
 		
 //		답변에 연결된 질문 찾기, 질문에 달린 답변 찾기
-		Optional<Question> oq = this.questionRepository.findById(2);
-		assertTrue(oq.isPresent());
-		Question q = oq.get();
-		List<Answer> answerList = q.getAnswerList();
-		assertEquals(1, answerList.size());
-		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
+//		Optional<Question> oq = this.questionRepository.findById(2);
+//		assertTrue(oq.isPresent());
+//		Question q = oq.get();
+//		List<Answer> answerList = q.getAnswerList();
+//		assertEquals(1, answerList.size());
+//		assertEquals("네 자동으로 생성됩니다.", answerList.get(0).getContent());
 		
+		for (int i = 1; i <=300; i++) {
+			String subject = String.format("테스트 데이터입니다 :[%03d]", i);
+			String content = "내용무";
+			this.questionService.create(subject, content);
+		}
 		
 		
 		
